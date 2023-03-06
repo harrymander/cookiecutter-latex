@@ -1,0 +1,28 @@
+%!TEX root = ./{{cookiecutter.project_name}}.tex
+
+\documentclass[{{cookiecutter.papersize}}paper]{{ "{" + cookiecutter.documentclass + "}" }}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[hidelinks]{hyperref}
+
+\usepackage{enumitem}
+
+% Should be loaded last
+\usepackage{cleveref}
+
+\frenchspacing
+
+\title{{ "{" + cookiecutter.project_name + "}" }}
+\author{{ "{" + cookiecutter.full_name + "}" }}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\end{document}
