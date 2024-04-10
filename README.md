@@ -5,6 +5,14 @@ for LaTeX.
 
 ## Usage
 
+To download:
+
+```
+cookiecutter gh:harrymander/cookiecutter-latex
+```
+
+and follow the prompts.
+
 Builds `{{project_name}}.pdf` to `{{build_dir}}` via `make`.
 
 Run `make open` to open in PDF viewer. (Open command is configured in `open_cmd`
