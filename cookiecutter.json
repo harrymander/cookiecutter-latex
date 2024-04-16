@@ -1,6 +1,6 @@
 {
-    "full_name": "Harry Mander",
     "project_name": "latex",
+    "full_name": "Harry Mander",
     "build_dir": "build",
     "papersize": "a4",
     "documentclass": "article",
