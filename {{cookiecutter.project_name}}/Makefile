@@ -33,3 +33,13 @@ watch: | $(BUILD_DIR)
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR)
+
+LOG_FILE = $(BUILD_DIR)/$(MAIN_TEX:.tex=.log)
+
+.PHONY: pplog
+pplog:
+	pplatex -i $(LOG_FILE)
+
+.PHONY: pperrors
+pperrors:
+	pplatex -q -i $(LOG_FILE)
