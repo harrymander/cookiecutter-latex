@@ -1,42 +1,34 @@
-BUILD_DIR = {{cookiecutter.build_dir}}
-PROJECT_NAME = {{cookiecutter.project_name}}
+BUILD_DIR ?= {{cookiecutter.build_dir}}
+MAIN_TEX ?= {{cookiecutter.project_name}}.tex
 
-TEX_FILES = $(wildcard *.tex)
-BIB_FILES = $(wildcard *.bib)
+TARGET = $(BUILD_DIR)/$(MAIN_TEX:.tex=.pdf)
+.PHONY: all
+all: $(TARGET)
 
-# List of figures that are generated as part of the build process and put in
-# BUILD_DIR
-GEN_FIGS =
+$(BUILD_DIR):
+	@mkdir -p $@
 
-OUT_PDF = $(BUILD_DIR)/$(PROJECT_NAME).pdf
-LOG_FILE = $(BUILD_DIR)/$(PROJECT_NAME).log
-
-LATEXMK = latexmk \
+DEPFILE = $(TARGET).d
+LATEXMK_CMD = latexmk \
 	-pdf \
 	-pdflatex="pdflatex -shell-escape -interaction=nonstopmode" \
-	-outdir="$(BUILD_DIR)"
+	-outdir=$(BUILD_DIR) \
+	-M -MF $(DEPFILE) \
+	-use-make \
+	$(MAIN_TEX)
 
-ifeq ($(WATCH), 1)
-	LATEXMK += -pvc
-endif
+$(TARGET): $(MAIN_TEX) | $(BUILD_DIR)
+	$(LATEXMK_CMD)
 
-.PHONY: all
-all: $(OUT_PDF)
+-include $(DEPFILE)
 
 .PHONY: open
-open: $(OUT_PDF)
-	{{cookiecutter.open_cmd}} "$^" >/dev/null 2>&1
+open: $(TARGET)
+	{{cookiecutter.open_cmd}} $<
 
-$(OUT_PDF): $(TEX_FILES) $(BIB_FILES) $(addprefix $(BUILD_DIR)/,$(GEN_FIGS))
-	$(LATEXMK) $(PROJECT_NAME)
-
-.PHONY: pplog
-pplog:
-	pplatex -i $(LOG_FILE)
-
-.PHONY: pperrors
-pperrors:
-	pplatex -q -i $(LOG_FILE)
+.PHONY: watch
+watch: | $(BUILD_DIR)
+	$(LATEXMK_CMD) -pvc
 
 .PHONY: clean
 clean:

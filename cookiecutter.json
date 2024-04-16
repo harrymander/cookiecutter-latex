@@ -4,5 +4,5 @@
     "build_dir": "build",
     "papersize": "a4",
     "documentclass": "article",
-    "open_cmd": "xdg-open"
+    "open_cmd": "open"
 }

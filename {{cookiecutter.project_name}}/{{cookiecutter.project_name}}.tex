@@ -8,7 +8,6 @@
 \usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage[hidelinks]{hyperref}
-
 \usepackage{enumitem}
 
 % Should be loaded last
@@ -18,6 +17,21 @@
 
 \title{{ "{" + cookiecutter.project_name + "}" }}
 \author{{ "{" + cookiecutter.full_name + "}" }}
+
+{% raw -%}
+% Used for automatically detecting dependencies for input files (e.g. graphics,
+% other .tex files) that are generated during compilation. If a file does not
+% exist, will print a message that signals to latexmk to run the make target for
+% that file; latexmk will then re-compile the document with the generated file.
+\newcommand\ifgen[2]{\IfFileExists{#1}{#2}{\typeout{No file #1.}}}
+
+% Convenience command; equivalent to \ifgen{filename}{\input{filename}}
+\newcommand\inputgen[1]{\ifgen{#1}{\input{#1}}}
+
+% Convenience command; equivalent to
+% \ifgen{filename}{\includegraphics[options]{filename}}
+\newcommand{\includegraphicsgen}[2][]{\ifgen{#2}{\includegraphics[#1]{#2}}}
+{%- endraw %}
 
 \begin{document}
 
